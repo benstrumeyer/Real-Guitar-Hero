@@ -39,7 +39,7 @@ Wireless transmitter sends to USB dongle
        |
 Computer receives MIDI via Web MIDI API
        |
-Guitar Coach processes note events
+Real Guitar Hero processes note events
 ```
 
 ### MIDI Output Format
@@ -64,7 +64,7 @@ This per-channel setup is key -- it tells us which string produced each note.
 ### Software Setup
 1. The TriplePlay appears as a standard USB MIDI device -- no special drivers needed on modern OS.
 2. Verify it shows up: open any MIDI monitor app, or check in the browser via Web MIDI API.
-3. In Guitar Coach, select "Fishman TriplePlay" as the MIDI input device.
+3. In Real Guitar Hero, select "Fishman TriplePlay" as the MIDI input device.
 
 ### Calibration
 1. **String sensitivity:** Each string's pickup sensitivity can be adjusted via the TriplePlay app. Start with defaults.

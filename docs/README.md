@@ -12,13 +12,13 @@ A Guitar Hero-style game that teaches you to play **real guitar** using **intera
 ## Architecture Overview
 
 ```
-┌─────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│  Real Guitar │───>│  Audio Interface │───>│  Desktop App    │
-│  (any electric    │  (USB, ~5-10ms)  │    │                 │
-│   or acoustic     └──────────────────┘    │  - Tab Highway  │
-│   w/ pickup)                              │  - Pitch Detect │
-│              │                            │  - Scoring      │
-└─────────────┘                             └─────────────────┘
+┌─────────────┐    ┌──────────────────────┐    ┌─────────────────┐
+│  Real Guitar │───>│  Fishman TriplePlay  │───>│  Desktop App    │
+│  (w/ hex     │    │  (wireless MIDI,     │    │                 │
+│   pickup)    │    │   per-string detect) │    │  - Tab Highway  │
+│              │    └──────────────────────┘    │  - Note Matching│
+│              │                               │  - Scoring      │
+└─────────────┘                                └─────────────────┘
 ```
 
 ## Tech Stack (Planned)
@@ -26,22 +26,29 @@ A Guitar Hero-style game that teaches you to play **real guitar** using **intera
 | Layer              | Technology              | Why                                        |
 |--------------------|-------------------------|--------------------------------------------|
 | **Game Engine/UI** | Godot 4 or Electron     | Godot: fast 2D rendering. Electron: web tech flexibility |
-| **Pitch Detection**| Aubio (YIN algorithm)   | Battle-tested, low-latency, open source    |
+| **Guitar Input**   | Fishman TriplePlay      | Hex pickup: per-string MIDI, exact fret/string detection, no pitch ambiguity |
+| **MIDI Processing**| rtmidi / Web MIDI API   | Read MIDI note-on/off, pitch bend, velocity from TriplePlay |
 | **Tab Parsing**    | alphaTab / TuxGuitar    | Parse Guitar Pro (.gp5/.gpx) files         |
-| **Audio Input**    | USB Audio Interface     | Scarlett Solo, Behringer UM2, etc. ($40-60) |
 | **Song Format**    | Guitar Pro tabs (.gpx)  | Richest guitar data: bends, slides, hammer-ons, timing |
 
 ## Hardware Requirements
 
-### MVP (Desktop App)
-- Any guitar (electric preferred for clean signal)
-- USB audio interface (1/4" jack input)
-- Computer running Windows/Mac/Linux
+### Primary Input: Fishman TriplePlay
+- **Fishman TriplePlay** hex pickup (~$300) -- mounts on any guitar
+- Sends MIDI wirelessly via USB receiver dongle
+- Detects each string independently -- knows exactly which string and fret
+- Tracks pitch bends, velocity, and note-on/off per string
+- Near-zero latency MIDI output
+- No pitch detection guesswork -- the hardware solves the hardest problem
 
-### Future: Standalone Hardware Version
-- **Bela** (~$150-300) -- BeagleBone-based, <1ms audio latency, runs Linux
-- **Electro-Smith Daisy** (~$30-250 depending on variant) -- STM32-based audio platform
-- Either could run pitch detection + drive a display independently
+### Also Needed
+- Any electric or acoustic guitar (TriplePlay mounts to the body)
+- Computer running Windows/Mac/Linux
+- TriplePlay USB wireless receiver (included with the unit)
+
+### Future: Fallback Audio Input
+- USB audio interface + Aubio pitch detection for users without a TriplePlay
+- Less precise (pitch ambiguity across strings) but still functional
 
 ## How It Works
 
@@ -53,12 +60,23 @@ A Guitar Hero-style game that teaches you to play **real guitar** using **intera
 
 ## Input Detection Strategy
 
-The app does **polyphonic pitch detection** on raw audio from the guitar:
+### Primary: Fishman TriplePlay (MIDI)
+
+The TriplePlay hex pickup sends **per-string MIDI data**, which eliminates pitch detection entirely:
+
+- **Exact string + fret**: Each string is a separate MIDI channel -- no ambiguity
+- **Note on/off**: Precise timing of when each note starts and stops
+- **Pitch bend**: Detects bends and slides as MIDI pitch bend messages
+- **Velocity**: Knows how hard you pick each string
+- **Chords**: Trivial -- just read all 6 channels simultaneously
+
+### Fallback: Audio Pitch Detection
+
+For users without a TriplePlay, the app can fall back to audio-based detection:
 
 - **Single notes**: YIN algorithm via Aubio -- fast and accurate
 - **Chords**: Harmonic Product Spectrum or ML-based (Crepe/SPICE)
-- **Techniques**: Onset detection for hammer-ons/pull-offs, pitch bend tracking for bends/slides
-- **Timing**: Compare detected note onsets against expected timing from the tab
+- **Limitation**: Cannot distinguish same pitch at different string/fret positions
 
 ## Song/Tab Format
 

@@ -1,17 +1,18 @@
 # Development Plan
 
-## Phase 1: Audio Foundation (Week 1-2)
+## Phase 1: MIDI Input Foundation (Week 1-2)
 
-**Goal:** Prove we can detect what note is being played on a real guitar in real-time.
+**Goal:** Prove we can read precise note data from the Fishman TriplePlay in real-time.
 
 - [ ] Set up project scaffold (Godot 4 or Electron -- decide after prototype)
-- [ ] Get audio input working from USB audio interface
-- [ ] Integrate Aubio for pitch detection (YIN algorithm)
-- [ ] Build a simple tuner display to verify detection accuracy
-- [ ] Test with single notes across all 6 strings, frets 0-12
-- [ ] Measure latency (target: <20ms input-to-detection)
+- [ ] Get Fishman TriplePlay MIDI input working via USB receiver
+- [ ] Use rtmidi (native) or Web MIDI API (Electron) to read MIDI messages
+- [ ] Parse per-string MIDI channels (TriplePlay sends each string on a separate channel)
+- [ ] Build a simple display showing: string, fret, velocity, pitch bend in real-time
+- [ ] Test with single notes, chords, bends, slides across all strings
+- [ ] Measure latency (target: <10ms MIDI input-to-display)
 
-**Deliverable:** A guitar tuner that shows the detected note + fret in real-time.
+**Deliverable:** A live monitor that shows exactly which string/fret you're pressing in real-time.
 
 ## Phase 2: Tab Parsing (Week 3)
 
@@ -52,10 +53,8 @@
 
 **Goal:** Match detected pitch to expected notes and score the player.
 
-- [ ] Map detected pitch → (string, fret) pair
-  - Challenge: same pitch exists at multiple string/fret positions
-  - Use the tab's string assignment as the expected answer
-  - Accept any fret/string combo that produces the correct pitch (configurable)
+- [ ] Match MIDI input (string + fret from TriplePlay) against expected notes from tab
+  - TriplePlay gives exact string/fret -- no ambiguity, direct comparison
 - [ ] Implement hit/miss detection with timing window:
   - Perfect: within ±30ms
   - Good: within ±60ms
@@ -103,16 +102,16 @@
 
 | Risk | Mitigation |
 |------|------------|
-| Polyphonic detection is hard | Start with single-note songs, add chord detection incrementally |
-| String/fret ambiguity (same pitch, different position) | Accept any correct pitch initially, refine with ML later |
-| Latency too high for feel-good gameplay | Use ASIO/JACK, minimize processing pipeline, target <20ms |
+| TriplePlay wireless latency | Test and measure; fall back to wired MIDI if needed |
+| TriplePlay tracking on fast passages | May need to tune sensitivity; start with moderate-tempo songs |
 | Guitar Pro format is complex/undocumented | Use existing parser libs, start with simple tabs |
+| TriplePlay discontinued/hard to find | Works standalone via MIDI; alternatives: hex pickups + MIDI converter |
 
 ## Decision Log
 
 | Decision | Options Considered | Choice | Reasoning |
 |----------|-------------------|--------|-----------|
 | Game engine | Godot 4, Electron, Love2D, SDL | TBD | Prototype both Godot and Electron, pick based on feel |
-| Pitch detection | Aubio, Essentia, Crepe, PitchFinder | Aubio (start) | Fastest, lowest latency, proven. Add ML-based later for chords |
+| Guitar input | Audio pitch detection, Fishman TriplePlay, Jamstik, hex pickup + MIDI | Fishman TriplePlay | Per-string MIDI eliminates pitch ambiguity; exact fret/string detection; near-zero latency |
 | Tab format | Guitar Pro, MIDI, MusicXML, custom | Guitar Pro | Most guitar-specific data, huge community library |
-| Audio input | USB interface, built-in mic, Teensy/Bela | USB interface | Simplest, lowest latency on desktop, no custom hardware needed |
+| MIDI library | rtmidi, Web MIDI API, portmidi | TBD | rtmidi for native; Web MIDI for Electron. Decide with engine choice |

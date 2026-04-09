@@ -1,18 +1,18 @@
-# Real Guitar Hero
+# Guitar Coach
 
-A real-time guitar learning tool that takes MIDI input from your guitar via a Fishman TriplePlay hex pickup, detects what you're playing, and visualizes it against interactive tabs -- like Guitar Hero but for real tabs on a real guitar.
+A real-time guitar training tool that takes MIDI input from your guitar via a Fishman TriplePlay hex pickup, detects what you're playing, and coaches you through interactive tabs with visual cues -- isolate sections, slow them down, repeat until mastered.
 
 ---
 
 ## Why This Exists
 
-I have a lot of technical skill on guitar, but I don't know how to put things together -- scales, theory, chord progressions. This tool lets me:
+I have a lot of technical skill on guitar, but I don't know how to put things together -- scales, theory, chord progressions. This tool coaches me by letting me:
 
-- **Load any tab** and see it scroll toward me Guitar Hero-style
+- **Isolate any section** of a tab and loop it until I nail it
 - **See exactly which notes I'm hitting** in real-time on a fretboard diagram
 - **Instantly spot wrong notes** -- visual feedback means I can just move my finger over
+- **Build up speed gradually** -- start at 40%, auto-increase as accuracy improves
 - **Learn music theory visually** -- scales, intervals, and chord shapes overlaid on the fretboard
-- **Slow down sections** -- loop a tricky part at half speed until I nail it
 
 ---
 
@@ -75,13 +75,21 @@ Scarlett Solo, Behringer UM2, etc. -- pitch detection via Web Audio API. Less pr
 
 ## Core Features
 
-### 1. Interactive Tab Highway (Guitar Hero Mode)
+### 1. Section Isolator & Training Modes
+- **Select any section** of a tab, loop it endlessly until mastered
+- **Speed ladder**: Start at 40% speed, auto-increase as accuracy improves, drop back if you struggle
+- **Fretboard-only mode**: No scrolling timeline -- notes light up on the neck at your own pace
+- **Phrase builder**: Break a solo into small chunks, master each, chain them together
+- **Call and response**: App plays a phrase, you play it back, compare side by side
+- See [ideas.md](./ideas.md) for full training mode descriptions
+
+### 2. Interactive Tab Highway
 - 6 horizontal lanes (one per string), fret numbers scroll toward a "hit zone"
 - Color-coded: upcoming (gray), in the zone (white), hit (green), missed (red)
 - Adjustable scroll speed / BPM
-- Loop sections with A-B repeat
+- One visualization mode among many -- the training tools are the core
 
-### 2. Real-Time Fretboard Visualization
+### 3. Real-Time Fretboard Visualization
 - Full fretboard diagram (frets 0-24, strings 1-6)
 - Real-time highlight of detected notes
 - Overlay modes:
@@ -90,25 +98,26 @@ Scarlett Solo, Behringer UM2, etc. -- pitch detection via Web Audio API. Less pr
   - **Interval mode:** Shows intervals relative to root note
   - **Chord mode:** Shows chord shape and name
 
-### 3. Note Matching + Scoring
+### 4. Note Matching + Scoring
 - TriplePlay gives exact string + fret -- direct comparison against tab
 - Timing windows: Perfect (±30ms), Good (±60ms), OK (±100ms), Miss
 - Score, streak counter, accuracy percentage
 - Visual + optional audio feedback on hit/miss
 
-### 4. Music Theory Engine
+### 5. Music Theory Engine
 - All major/minor scales, modes (Ionian through Locrian), pentatonics, blues
 - Chord construction: triads, 7ths, extended, altered
 - Interval recognition: "that's a minor 3rd from the root"
 - Key detection from played notes
 - Suggested next chords based on current key/progression (diatonic harmony)
 
-### 5. Practice Tools
+### 6. Practice Tools
 - **Speed control:** 25%, 50%, 75%, 100%
 - **Section looping:** A-B repeat until clean
 - **Progressive speed:** Start slow, auto-increase as accuracy improves
 - **Fretboard preview:** Highlight upcoming notes on the neck diagram
 - **Difficulty filtering:** Hide some notes for simplified playthrough
+- **Slow motion replay:** Review your performance at 25% speed with visual overlay
 
 ---
 
@@ -185,7 +194,7 @@ For quick prototyping and custom exercises:
 ## Project Structure
 
 ```
-Real-Guitar-Hero/
+Guitar-Coach/
 ├── docs/
 │   ├── README.md              # This file
 │   ├── plan.md                # Development plan & milestones
@@ -228,12 +237,12 @@ Real-Guitar-Hero/
 
 ## Inspiration
 
-- Guitar Hero / Rock Band (gameplay feel)
 - Rocksmith (real guitar input concept)
 - Yousician (learning progression)
-- Clone Hero (open-source community charts)
+- Guitar Hero / Rock Band (scrolling highway visualization)
+- Justin Guitar (structured teaching approach)
 
-The gap: Rocksmith is discontinued/closed-source, Yousician is subscription-based and limited. There's no good **open-source, tab-based, Guitar Hero-style real guitar trainer**. This project fills that gap.
+The gap: Rocksmith is discontinued/closed-source, Yousician is subscription-based and limited, and none of them focus on **isolating and drilling specific sections** the way a real guitar teacher would. This project fills that gap -- it's the coaching tool, not the game.
 
 ## References
 

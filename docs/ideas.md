@@ -1,6 +1,65 @@
 # Ideas & Brainstorming
 
-## Core Experience Ideas
+## Training Modes (Core -- Not Just Guitar Hero)
+
+The Guitar Hero highway is one visualization, but the real value is as a **training tool**. These modes focus on isolating, repeating, and mastering specific sections with visual cues.
+
+### Section Isolator
+- **Select any section** of a tab (2 bars, 4 bars, a whole verse) by clicking start/end points
+- **Loop it endlessly** until you nail it -- no menus, no restarting the song
+- **Visual countdown** before each loop restart (3-2-1 with a beat pulse)
+- **Ghost notes**: After you play through once, show your previous attempt as faded notes on the fretboard so you can see where you were vs where you should be
+- **Auto-advance**: Once you hit 90%+ accuracy 3 times in a row, auto-expand the section (add the next 2 bars)
+
+### Speed Ladder
+- Pick a section, start at 40% speed
+- Fretboard shows notes with **long, slow visual cues** -- notes light up well before you need to play them
+- As accuracy improves, speed auto-increments (40% → 50% → 60% → ... → 100%)
+- If you drop below threshold, it **drops back one step** instead of continuing
+- Visual: progress bar showing your current speed level, like climbing a ladder
+
+### Fretboard-Only Mode (No Highway)
+- No scrolling tab -- just the fretboard diagram
+- Next note(s) light up on the neck, you play them, next ones appear
+- Pace is **driven by you**, not by a scrolling timeline
+- Great for memorizing positions and building muscle memory without time pressure
+- Can overlay scale shapes, chord shapes, or interval markers while you play
+
+### Phrase Builder
+- Break a solo/riff into **small phrases** (2-4 notes each)
+- Learn phrase 1, then phrase 2, then combine 1+2, then add phrase 3, etc.
+- Visual: only the current phrase lights up on the fretboard, everything else is dimmed
+- Like how you'd actually learn a piece with a teacher -- small chunks, chain them together
+
+### Call and Response
+- App plays a phrase (audio + visual on fretboard)
+- You play it back
+- App shows what you played vs what it expected -- side by side comparison
+- Gradually removes the visual cues so you're playing from memory/ear
+
+### Technique Spotlight
+- Isolate a specific technique: bends, slides, hammer-ons, pull-offs, vibrato
+- App highlights only the moments in a tab where that technique appears
+- Practice just those moments in sequence, skipping everything else
+- Visual cues specific to the technique (e.g., bend arrow showing target pitch)
+
+### Chord Transition Trainer
+- Pick two chords (e.g., G → C)
+- Fretboard shows chord shape A, you play it, then shows chord shape B, you switch
+- Metronome ticks -- goal is clean transitions on the beat
+- Tracks your transition time and accuracy over sessions
+- Can build up to full progressions (G → C → D → Em)
+
+### Slow Motion Replay
+- Play through a section at full speed
+- App records your MIDI input
+- Replay your performance at 25% speed with the fretboard visualization
+- See exactly where your timing was off or which notes you flubbed
+- Compare your replay against the "perfect" tab overlay
+
+---
+
+## Visualization Modes
 
 ### Interactive Tab Highway Variations
 - **Standard mode**: Fret numbers scroll down 6 string lanes (Guitar Hero style)
@@ -8,11 +67,10 @@
 - **Hybrid mode**: Highway + small fretboard preview in corner
 - **Tab mode**: Traditional tab notation that highlights/scrolls as you play (for people who already read tabs)
 
-### Smart Practice
+### Smart Practice Analytics
 - **Weak spot detection**: Track which frets/positions you miss most, generate targeted drills
-- **Muscle memory trainer**: Repeat a riff at increasing speeds (60% → 70% → 80% → ... → 100%)
-- **Chord transition drills**: Focus on switching between two chords smoothly
-- **Ear training mode**: Play a note/phrase, you play it back without seeing the tab
+- **Heat map**: Show a fretboard heat map of your most-missed positions over time
+- **Session summary**: After each practice, show accuracy by section, speed progress, technique breakdown
 
 ### Gamification
 - **XP system**: Earn XP per song, level up your "guitarist profile"
